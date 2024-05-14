@@ -2,10 +2,11 @@ import { ZodTypeProvider } from "fastify-type-provider-zod";
 import { z } from "zod";
 import { FastifyInstance } from "fastify";
 import { BadRequest } from "./_errors/bad-request";
-import { Body } from "twilio/lib/twiml/MessagingResponse";
 
-const accountSid = "ACb55df16edd4b829ae5d8106a126dd786";
-const authToken = "7226995e33518776d559d075b6eda720";
+require('dotenv').config()
+
+const accountSid = process.env.ACCOUNT_SID
+const authToken = process.env.AUTH_TOKEN
 const client = require("twilio")(accountSid, authToken);
 
 export async function sendSms(app: FastifyInstance) {

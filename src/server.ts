@@ -4,9 +4,10 @@ import fastifySwagger from "@fastify/swagger"
 import fastifySwaggerUI from "@fastify/swagger-ui"
 import fastifyCors from "@fastify/cors"
 
-import { jsonSchemaTransform, serializerCompiler, validatorCompiler } from "fastify-type-provider-zod"
+import { ZodTypeProvider, jsonSchemaTransform, serializerCompiler, validatorCompiler } from "fastify-type-provider-zod"
 import { sendSms } from "./routes/send-sms"
 import { errorHandler } from "./error-handler"
+import z from "zod"
 
 const app = fastify()
 
@@ -35,6 +36,24 @@ app.setValidatorCompiler(validatorCompiler)
 app.setSerializerCompiler(serializerCompiler)
 
 app.register(sendSms)
+
+app.withTypeProvider<ZodTypeProvider>().get(
+  "/",
+  {
+    schema: {
+      summary: "Hello Wolrd for API",
+      tags: ["Hello"],
+      response: {
+        201: z.object({
+          text: z.string(),
+        }),
+      },
+    },
+  },
+  async (request, reply) => {
+    return reply.status(201).send({ text: "Hello Wolrd" })
+  }
+)
 
 app.setErrorHandler(errorHandler)
 
