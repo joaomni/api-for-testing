@@ -4,7 +4,8 @@ import { FastifyInstance } from "fastify";
 import { BadRequest } from "./_errors/bad-request";
 import dotenv from 'dotenv';
 dotenv.config();
-import { Twilio } from 'twilio';
+import pkg from 'twilio'
+const { Twilio } = pkg
 
 const twilio: Twilio = singleton<Twilio>(
   'twilio',
