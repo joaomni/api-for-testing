@@ -1,0 +1,9 @@
+POST http://localhost:3333/sms
+Content-Type: application/json
+
+{
+  "name": "João",
+  "contact": "13991027026",
+  "company": "Sothink Mkt",
+  "instagram": "@sothink.mkt"
+}
