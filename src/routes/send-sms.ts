@@ -2,12 +2,22 @@ import { ZodTypeProvider } from "fastify-type-provider-zod";
 import { z } from "zod";
 import { FastifyInstance } from "fastify";
 import { BadRequest } from "./_errors/bad-request";
+import dotenv from 'dotenv';
+dotenv.config();
+import { Twilio } from 'twilio';
 
-require('dotenv').config()
+const twilio: Twilio = singleton<Twilio>(
+  'twilio',
+  () =>
+    new Twilio(process.env.ACCOUNT_SID, process.env.AUTH_TOKEN),
+);
 
-const accountSid = process.env.ACCOUNT_SID
-const authToken = process.env.AUTH_TOKEN
-const client = require("twilio")(accountSid, authToken);
+export function singleton<Value>(name: string, value: () => Value): Value {
+  const g = global as any;
+  g.__singletons ??= {};
+  g.__singletons[name] ??= value();
+  return g.__singletons[name];
+}
 
 export async function sendSms(app: FastifyInstance) {
   app.withTypeProvider<ZodTypeProvider>().post(
@@ -36,14 +46,12 @@ export async function sendSms(app: FastifyInstance) {
 
       console.log(text)
 
-      client.messages
+      twilio.messages
         .create({
           body:     text,
           from: "+14793703859",
           to: "+5513991027026",
         })
-        .then((message) => console.log(message.sid))
-        .done()
 
       return reply.status(201).send({ messageSms: text });
     }
