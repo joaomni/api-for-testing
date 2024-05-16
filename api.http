@@ -5,5 +5,6 @@ Content-Type: application/json
   "name": "Ashley",
   "contact": "13992096245",
   "company": "AK Inc.",
+  "companySize": "2 a 9",
   "instagram": "@euashley__"
 }
