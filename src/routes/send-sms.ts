@@ -50,7 +50,7 @@ export async function sendSms(app: FastifyInstance) {
 				contact +
 				', Empresa: ' +
 				company +
-        ', Funcionarios' +
+        ', Funcionarios: ' +
         companySize +
 				', Instagram: ' +
 				instagram
